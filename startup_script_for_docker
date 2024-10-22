@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# Enable logging to a log file
+LOGFILE="/tmp/startup-script.log"
+exec > >(tee -a "$LOGFILE") 2>&1
+
+echo "Startup script started at: $(date)"
+
+# Write properties to config.properties
+echo "Writing to config.properties..."
+mkdir -p /home/model-server/
+echo "install_py_dep_per_model=true" >> /home/model-server/config.properties
+echo "enable_envvars_config=true" >> /home/model-server/config.properties
+
+# Verify contents of config.properties
+echo "Contents of config.properties:"
+cat /home/model-server/config.properties
+
+echo "Startup script completed at: $(date)"
+
 # Use logger 
 logger "Startup script started."
 
