@@ -62,3 +62,41 @@ logger "Startup script completed."
 # Verify the installed version
 !protoc --version
 
+
+
+# Step 1: Install the latest Protobuf release for Linux
+!wget https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protoc-21.12-linux-x86_64.zip
+
+# Step 2: Unzip Protobuf to /usr/local
+!unzip protoc-21.12-linux-x86_64.zip -d /usr/local
+
+# Step 3: Update PATH to include the Protobuf binary
+import os
+os.environ["PATH"] += ":/usr/local/bin"
+
+# Step 4: Verify the Protobuf installation
+!protoc --version  # Should print 'libprotoc 21.12'
+
+# Step 5: Upload your .proto file from your local machine
+from google.colab import files
+uploaded = files.upload()
+
+# Step 6: Generate the Python file from the .proto file
+# Assuming your uploaded file is named 'tensor.proto'
+!protoc --python_out=. tensor.proto
+
+# Step 7: Verify that the tensor_pb2.py file was generated
+!ls
+
+# Step 8: Test the Protobuf serialization/deserialization logic
+from tensor_pb2 import Tensor
+
+# Create a TensorProto object
+tensor = Tensor(values=[1.0, 2.0, 3.0], shape=[3], dtype="float32")
+
+# Serialize the TensorProto to bytes
+serialized = tensor.SerializeToString()
+
+# Deserialize the bytes back to TensorProto
+deserialized = Tensor.FromString(serializ
+
