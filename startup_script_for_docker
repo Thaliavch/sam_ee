@@ -46,3 +46,19 @@ echo "enable_envvars_config=true" >> /home/model-server/config.properties
 cat /home/model-server/config.properties | logger
 
 logger "Startup script completed."
+
+
+
+
+# Download Protobuf 3.21.12 from a verified source
+!wget https://storage.googleapis.com/protobuf-release/v3.21.12/protoc-3.21.12-linux-x86_64.zip
+
+# Unzip the downloaded file to /usr/local
+!unzip protoc-3.21.12-linux-x86_64.zip -d /usr/local
+
+# Ensure the new protoc is available in PATH
+!export PATH=/usr/local/bin:$PATH
+
+# Verify the installed version
+!protoc --version
+
