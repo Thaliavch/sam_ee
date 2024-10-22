@@ -27,6 +27,21 @@ mkdir -p /home/model-server/
 echo "install_py_dep_per_model=true" >> /home/model-server/config.properties
 echo "enable_envvars_config=true" >> /home/model-server/config.properties
 
+
+
+# Download the latest Protobuf release (3.21.12) from GitHub
+!wget https://github.com/protocolbuffers/protobuf/releases/download/v3.21.12/protoc-3.21.12-linux-x86_64.zip
+
+# Unzip the downloaded file to /usr/local
+!unzip protoc-3.21.12-linux-x86_64.zip -d /usr/local
+
+# Ensure the new protoc is available in PATH
+!export PATH=/usr/local/bin:$PATH
+
+# Verify the installed version
+!protoc --version
+
+
 # Verify contents and log the output
 cat /home/model-server/config.properties | logger
 
