@@ -57,3 +57,25 @@ class SAMSegmentationHandler(BaseHandler):
         mask_bytes = io.BytesIO()
         mask_image.save(mask_bytes, format="PNG")
         return [mask_bytes.getvalue()]
+
+###############################################################################
+
+import torch
+from segment_anything import sam_model_registry, SamPredictor
+
+# Load SAM model (replace "vit_b" with the appropriate model type if different)
+model_type = "vit_b"
+checkpoint_path = "path/to/checkpoint.pth"  # Replace with your SAM checkpoint path
+sam = sam_model_registry[model_type](checkpoint=checkpoint_path)
+
+# Set SAM model to evaluation mode and move it to GPU if available
+device = "cuda" if torch.cuda.is_available() else "cpu"
+sam.to(device)
+sam.eval()
+
+# Initialize the predictor
+predictor = SamPredictor(sam)
+
+# Set the RGB image for prediction
+predictor.set_image(rgb_image)
+
